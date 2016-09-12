@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const H = require('highland')
 const parse = require('csv-parse')
 const Handlebars = require('handlebars')
@@ -12,25 +13,31 @@ emojiData.forEach((emoji) => {
   emojiUnified[emoji.unified.toLowerCase()] = emoji
 })
 
+const INCH_DIMENSIONS = [
+  7.5,
+  7.5
+]
+const EMOJI_PER_VOLUME = 185
+
 const EMOJI_PNG_URL = 'https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/'
 var stream = fs.createReadStream('NYPL DEC- Digital Emoji Collections - complete.csv', 'utf8')
   .pipe(parser)
 
 String.prototype.toCodePoints = function() {
-    chars = [];
-    for (var i= 0; i<this.length; i++) {
-        var c1= this.charCodeAt(i);
-        if (c1>=0xD800 && c1<0xDC00 && i+1<this.length) {
-            var c2= this.charCodeAt(i+1);
-            if (c2>=0xDC00 && c2<0xE000) {
-                chars.push(0x10000 + ((c1-0xD800)<<10) + (c2-0xDC00));
-                i++;
-                continue;
-            }
-        }
-        chars.push(c1);
+  chars = [];
+  for (var i= 0; i<this.length; i++) {
+    var c1 = this.charCodeAt(i)
+    if (c1 >= 0xD800 && c1<0xDC00 && i+1 < this.length) {
+      var c2= this.charCodeAt(i+1)
+      if (c2>=0xDC00 && c2<0xE000) {
+        chars.push(0x10000 + ((c1-0xD800)<<10) + (c2-0xDC00))
+        i++
+        continue
+      }
     }
-    return chars;
+    chars.push(c1)
+  }
+  return chars
 }
 
 const NYPL_LABS = ['🏛', '🦁', '🗽', '💾']
@@ -42,24 +49,17 @@ const NYPL_LABS = ['🏛', '🦁', '🗽', '💾']
   }))
 
 const EXCLUDE_NAMES = [
-  'u5272',
-  'u5408',
-  'u55b6',
-  'u6307',
-  'u6708',
-  'u6709',
-  'u6e80',
-  'u7121',
-  'u7533',
-  'u7981',
-  'u7a7a'
+  'black medium square',
+  'black medium small square'
 ]
 
+function createVolume(volume) {
+  console.log(`Volume ${volume.volume} - ${volume.emojis.length} emoji, ${volume.emojis.length * 2 + 1} pages`)
+  const html = template(volume)
+  fs.writeFileSync(path.join(__dirname, 'volumes', `${volume.volume}.html`), html, 'utf8')
+}
 
-// jack o lantern
-// ends with 2, remove 2
-// clock12 => clock 12:00
-
+var volume = 0
 H(stream)
   .drop(2)
   .map((row) => ({
@@ -72,12 +72,6 @@ H(stream)
   .filter((emoji) => emoji.imageId)
   .filter((emoji) => emoji.emoji)
   .map((emoji) => {
-    // const unified = emoji.unicode
-    //   .toLowerCase()
-    //   .replace(/"/g, '')
-    //   .split('\\u').filter((hex) => hex.length)
-    //   .join('-')
-
     const codePoints = emoji.emoji.toCodePoints()
 
     if (codePoints.length !== 1) {
@@ -90,7 +84,6 @@ H(stream)
     if (data) {
       const name = data.short_name.replace(/_/g, ' ')
 
-      // console.error(data)
       return Object.assign(emoji, {
         png: `${EMOJI_PNG_URL}${data.image}`,
         name: name,
@@ -104,15 +97,18 @@ H(stream)
   .stopOnError(console.error)
   .compact()
   .filter((emoji) => EXCLUDE_NAMES.indexOf(emoji.name) === -1)
-  // .drop(10)
-  .take(100)
   .sortBy(function (a, b) {
     return b.name < a.name ? 1 : -1
   })
-  .toArray((emojis) => {
-    console.error(`👯  ${emojis.length} emojis done!`)
-    console.log(template({
-      emojis,
-      nyplLabs: NYPL_LABS
-    }))
+  .batch(EMOJI_PER_VOLUME)
+  .map((emojis) => ({
+    volume: volume += 1,
+    emojis: emojis,
+    from: emojis[0],
+    to: emojis[emojis.length - 1],
+    nyplLabs: NYPL_LABS
+  }))
+  .map(createVolume)
+  .done(() => {
+    console.log('Done!')
   })

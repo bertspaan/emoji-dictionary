@@ -8,7 +8,7 @@
     body {
       margin: 0;
       padding: 0;
-      width: 8.25in;
+      width: 7.5in;
 
       font-family: 'Crimson Text', serif;
       font-size: .2in;
@@ -22,12 +22,22 @@
       align-items: center;
     }
 
+    .from-to {
+      display: flex;
+      align-items: center;
+    }
+
+    .from-to img {
+      width: 1.5em;
+      padding: 0 .5em;
+    }
+
     .nypl-labs img {
       width: 75px;
     }
 
     .page {
-      height: 10.75in;
+      height: 7.5in;
 
       width: 100%;
       padding: 2em;
@@ -36,16 +46,22 @@
       page-break-after: always;
     }
 
+    .centered {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     ol#emojis {
       margin: 0;
-      padding: 0 2em;
+      padding: 0;
       list-style-type: none;
       box-sizing: border-box;
       width: 100%;
     }
 
     ol#emojis li {
-      padding: .5em 0;
+      /*padding: .5em 0;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -53,36 +69,25 @@
       page-break-inside: avoid;
 
       box-sizing: border-box;
-      width: 100%;
-    }
-
-    .emoji-and-name {
-      display: inline;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      width: 100%;*/
     }
 
     .emoji {
-      width: 2em;
-      padding-right: 1em;
-    }
-
-    .name {
-      display: inline;
+      /*width: 2em;*/
+      /*padding-right: 1em;*/
     }
 
     .image {
-      width: 300px;
-      height: 300px;
+      width: 760px;
+      height: 760px;
+
+      max-width: 100%;
+      max-height: 100%;
+
       page-break-inside: avoid;
       background-position: center;
       background-size: contain;
       background-repeat: no-repeat;
-    }
-
-    .page-break {
-      page-break-after: always;
     }
 
   </style>
@@ -90,19 +95,24 @@
 <body>
   <header class="page">
     <h1>NYPL Emoji Dictionary</h1>
-    <h2>2016</h2>
     <div class="nypl-labs">
       {{#each nyplLabs}}
       <img src="{{png}}" />
       {{/each}}
     </div>
+    <h2>Volume {{volume}}</h2>
+    <h3 class="from-to">{{from.name}} <img src="{{from.png}}" /> — <img src="{{to.png}}" /> {{to.name}}</h3>
+    <div>NYPL Labs — 2016</div>
   </header>
   <ol id="emojis">
   {{#each emojis}}
     <li>
-      <img class="emoji" src="{{png}}" />
-        <!-- <h2 class="name">{{name}}</h2> -->
-      <div class="image" style="background-image: url(http://images.nypl.org/index.php?id={{imageId}}&t=w);" />
+      <div class="page centered">
+        <img class="emoji" src="{{png}}" />
+      </div>
+      <div class="page centered">
+        <div class="image" style="background-image: url(http://images.nypl.org/index.php?id={{imageId}}&t=w);" />
+      </div>
     </li>
   {{/each}}
   </ol>
