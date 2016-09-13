@@ -16,10 +16,25 @@
       -webkit-print-color-adjust: exact;
     }
 
+    h1, h2, h3 {
+      margin: 0;
+    }
+
     header {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header > *, .header-center h2 {
+      margin: 2vh 0;
     }
 
     .from-to {
@@ -33,7 +48,7 @@
     }
 
     .nypl-labs img {
-      width: 75px;
+      width: 50px;
     }
 
     .page {
@@ -60,23 +75,6 @@
       width: 100%;
     }
 
-    ol#emojis li {
-      /*padding: .5em 0;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      page-break-inside: avoid;
-
-      box-sizing: border-box;
-      width: 100%;*/
-    }
-
-    .emoji {
-      /*width: 2em;*/
-      /*padding-right: 1em;*/
-    }
-
     .image {
       width: 760px;
       height: 760px;
@@ -95,14 +93,16 @@
 <body>
   <header class="page">
     <h1>NYPL Emoji Dictionary</h1>
-    <div class="nypl-labs">
-      <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f3db.png" />
-      <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f981.png" />
-      <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f5fd.png" />
-      <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f4be.png" />
+    <div class="header-center">
+      <div class="nypl-labs">
+        <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f3db.png" />
+        <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f981.png" />
+        <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f5fd.png" />
+        <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f4be.png" />
+      </div>
+      <h2>Volume IV</h2>
+      <h3 class="from-to">seedling <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f331.png" /> — <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f4a4.png" /> zzz</h3>
     </div>
-    <h2>Volume 4</h2>
-    <h3 class="from-to">seedling <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f331.png" /> — <img src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f4a4.png" /> zzz</h3>
     <div>NYPL Labs — 2016</div>
   </header>
   <ol id="emojis">

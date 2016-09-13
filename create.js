@@ -4,6 +4,7 @@ const H = require('highland')
 const parse = require('csv-parse')
 const Handlebars = require('handlebars')
 const emojiData = require('./emoji.json')
+const roman = require('roman-numerals')
 
 const template = Handlebars.compile(fs.readFileSync('template.html', 'utf8'))
 const parser = parse({delimiter: ','})
@@ -17,7 +18,7 @@ const INCH_DIMENSIONS = [
   7.5,
   7.5
 ]
-const EMOJI_PER_VOLUME = 185
+const EMOJIS_PER_VOLUME = 185
 
 const EMOJI_PNG_URL = 'https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/'
 var stream = fs.createReadStream('NYPL DEC- Digital Emoji Collections - complete.csv', 'utf8')
@@ -97,12 +98,11 @@ H(stream)
   .stopOnError(console.error)
   .compact()
   .filter((emoji) => EXCLUDE_NAMES.indexOf(emoji.name) === -1)
-  .sortBy(function (a, b) {
-    return b.name < a.name ? 1 : -1
-  })
-  .batch(EMOJI_PER_VOLUME)
+  .sortBy((a, b) => b.name < a.name ? 1 : -1)
+  .batch(EMOJIS_PER_VOLUME)
   .map((emojis) => ({
     volume: volume += 1,
+    romanVolume: roman.toRoman(volume),
     emojis: emojis,
     from: emojis[0],
     to: emojis[emojis.length - 1],

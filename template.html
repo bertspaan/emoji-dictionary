@@ -16,10 +16,25 @@
       -webkit-print-color-adjust: exact;
     }
 
+    h1, h2, h3 {
+      margin: 0;
+    }
+
     header {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header > *, .header-center h2 {
+      margin: 2vh 0;
     }
 
     .from-to {
@@ -33,7 +48,7 @@
     }
 
     .nypl-labs img {
-      width: 75px;
+      width: 50px;
     }
 
     .page {
@@ -60,23 +75,6 @@
       width: 100%;
     }
 
-    ol#emojis li {
-      /*padding: .5em 0;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      page-break-inside: avoid;
-
-      box-sizing: border-box;
-      width: 100%;*/
-    }
-
-    .emoji {
-      /*width: 2em;*/
-      /*padding-right: 1em;*/
-    }
-
     .image {
       width: 760px;
       height: 760px;
@@ -95,13 +93,15 @@
 <body>
   <header class="page">
     <h1>NYPL Emoji Dictionary</h1>
-    <div class="nypl-labs">
-      {{#each nyplLabs}}
-      <img src="{{png}}" />
-      {{/each}}
+    <div class="header-center">
+      <div class="nypl-labs">
+        {{#each nyplLabs}}
+        <img src="{{png}}" />
+        {{/each}}
+      </div>
+      <h2>Volume {{romanVolume}}</h2>
+      <h3 class="from-to">{{from.name}} <img src="{{from.png}}" /> — <img src="{{to.png}}" /> {{to.name}}</h3>
     </div>
-    <h2>Volume {{volume}}</h2>
-    <h3 class="from-to">{{from.name}} <img src="{{from.png}}" /> — <img src="{{to.png}}" /> {{to.name}}</h3>
     <div>NYPL Labs — 2016</div>
   </header>
   <ol id="emojis">
