@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NYPL Emoji Dictionary - Volume {{romanVolume}}</title>
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: {{cover.width}};
+
+      font-family: 'Crimson Text', serif;
+      font-size: .2in;
+
+      -webkit-print-color-adjust: exact;
+    }
+
+    .cover-page {
+      height: {{cover.height}};
+
+      width: 100%;
+      padding: {{page.margin}};
+      box-sizing: border-box;
+
+      display: flex;
+      flex-direction: row;
+    }
+
+    .cover-page > * {
+      height: 100%;
+    }
+
+    .front, .back {
+      width: 50%;
+    }
+
+    .gutter {
+      width: {{cover.gutterWidth}};
+      flex-shrink: 0;
+    }
+
+    .gutter h1 {
+      text-align: center;
+      margin: 0;
+      transform: rotate(90deg);
+	    transform-origin: 50% 50%;
+      width: {{cover.height}};
+      height: {{cover.gutterWidth}};
+
+      top: 3.3in;
+      left: -3.802in;
+      position: relative;
+    }
+
+    h1 {
+      margin: .5em 0;
+    }
+
+    h2, h3 {
+      margin: 0;
+    }
+
+    .front {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .from-to {
+      display: flex;
+      align-items: center;
+    }
+
+    .from-to img {
+      width: 1.5em;
+      padding: 0 .5em;
+    }
+
+    .nypl-labs img {
+      width: 3em;
+    }
+
+    .centered {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ol.emojis {
+      list-style-type: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .emoji {
+      width: 28px;
+      padding: 5px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="cover-page">
+    <div class="front">
+      <div class="center">
+        <h1>NYPL Emoji Dictionary</h1>
+        <div class="nypl-labs">
+          {{#each nyplLabs}}
+          <img src="{{png}}" />
+          {{/each}}
+        </div>
+      </div>
+      <div class="center">
+        <h1>Volume {{romanVolume}}</h1>
+        <h3 class="from-to">{{from.name}} <img src="{{from.png}}" /> — <img src="{{to.png}}" /> {{to.name}}</h3>
+      </div>
+      <div>NYPL Labs — 2016</div>
+    </div>
+    <div class="gutter">
+      <h1>NYPL Emoji Dictionary — Volume {{romanVolume}}</h1>
+    </div>
+    <div class="back">
+      <ol class="emojis">
+      {{#each emojis}}
+        <li>
+          <img class="emoji" src="{{png}}" />
+        </li>
+      {{/each}}
+      </ol>
+    </div>
+</body>
+</html>

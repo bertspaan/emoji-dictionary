@@ -5,24 +5,38 @@ const parse = require('csv-parse')
 const Handlebars = require('handlebars')
 const emojiData = require('./emoji.json')
 const roman = require('roman-numerals')
+const csvParser = parse({delimiter: ','})
 
-const template = Handlebars.compile(fs.readFileSync('template.html', 'utf8'))
-const parser = parse({delimiter: ','})
+const templates = {
+  cover: Handlebars.compile(fs.readFileSync(path.join(__dirname, 'templates', 'cover.html'), 'utf8')),
+  pages: Handlebars.compile(fs.readFileSync(path.join(__dirname, 'templates', 'pages.html'), 'utf8'))
+}
 
 var emojiUnified = {}
 emojiData.forEach((emoji) => {
   emojiUnified[emoji.unified.toLowerCase()] = emoji
 })
 
-const INCH_DIMENSIONS = [
-  7.5,
-  7.5
+const COVER_DIMENSIONS = [
+  '11.222in',
+  '8.25in'
 ]
+
+GUTTER_WIDTH = '.972in'
+
+const PAGE_DIMENSIONS = [
+  '5.125in',
+  '8.25in'
+]
+
+PAGE_MARGIN = '.35in'
+BINDING_EDGE_MARGIN = '.7in'
+
 const EMOJIS_PER_VOLUME = 185
 
 const EMOJI_PNG_URL = 'https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/'
 var stream = fs.createReadStream('NYPL DEC- Digital Emoji Collections - complete.csv', 'utf8')
-  .pipe(parser)
+  .pipe(csvParser)
 
 String.prototype.toCodePoints = function() {
   chars = [];
@@ -55,9 +69,14 @@ const EXCLUDE_NAMES = [
 ]
 
 function createVolume(volume) {
-  console.log(`Volume ${volume.volume} - ${volume.emojis.length} emoji, ${volume.emojis.length * 2 + 1} pages`)
-  const html = template(volume)
-  fs.writeFileSync(path.join(__dirname, 'volumes', `${volume.volume}.html`), html, 'utf8')
+  const pages = 1 + volume.emojis.length * 2 + volume.emptyPages.length
+  console.log(`Volume ${volume.volume} - ${volume.emojis.length} emoji, ${pages} pages`)
+
+  const coverHtml = templates.cover(volume)
+  const pagesHtml = templates.pages(volume)
+
+  fs.writeFileSync(path.join(__dirname, 'volumes', `${volume.volume}.cover.html`), coverHtml, 'utf8')
+  fs.writeFileSync(path.join(__dirname, 'volumes', `${volume.volume}.pages.html`), pagesHtml, 'utf8')
 }
 
 var volume = 0
@@ -76,7 +95,7 @@ H(stream)
     const codePoints = emoji.emoji.toCodePoints()
 
     if (codePoints.length !== 1) {
-      console.error('Multiple code points... WHAT TO DO?', codePoints, emoji.emoji)
+      console.log('Multiple code points... WHAT TO DO?', codePoints, emoji.emoji)
     }
 
     const codePoint = codePoints[0].toString(16)
@@ -106,7 +125,21 @@ H(stream)
     emojis: emojis,
     from: emojis[0],
     to: emojis[emojis.length - 1],
-    nyplLabs: NYPL_LABS
+    nyplLabs: NYPL_LABS,
+    page: {
+      width: PAGE_DIMENSIONS[0],
+      height: PAGE_DIMENSIONS[1],
+      margin: PAGE_MARGIN,
+      bindingEdgeMargin: BINDING_EDGE_MARGIN
+    },
+    emptyPages: Array.from({
+      length: Math.ceil((1 + emojis.length * 2) / 6) * 6 - (1 + emojis.length * 2)
+    }, () => 1),
+    cover: {
+      width: COVER_DIMENSIONS[0],
+      height: COVER_DIMENSIONS[1],
+      gutterWidth: GUTTER_WIDTH
+    }
   }))
   .map(createVolume)
   .done(() => {

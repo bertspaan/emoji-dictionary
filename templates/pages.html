@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NYPL Emoji Dictionary - Volume {{romanVolume}}</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: {{page.width}};
+
+      -webkit-print-color-adjust: exact;
+    }
+
+    .page {
+      height: {{page.height}};
+
+      width: 100%;
+      padding: {{page.margin}};
+      box-sizing: border-box;
+
+      page-break-after: always;
+    }
+
+    .page.left {
+      padding-right: {{page.bindingEdgeMargin}};
+    }
+
+    .page.right {
+      padding-left: {{page.bindingEdgeMargin}};
+    }
+
+    .centered {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ol.emojis {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .digital-collections {
+      width: 760px;
+      height: 760px;
+
+      max-width: 100%;
+      max-height: 100%;
+
+      page-break-inside: avoid;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Single empty page, emojis start on page 2 -->
+    <!-- https://support.blurb.com/hc/en-us/articles/207794816-How-pages-are-counted-in-a-Blurb-book -->
+  </div>
+  <ol class="emojis">
+  {{#each emojis}}
+    <li>
+      <div class="page left centered">
+        <img class="emoji" src="{{png}}" />
+      </div>
+      <div class="page right centered">
+        <div class="digital-collections" style="background-image: url(http://images.nypl.org/index.php?id={{imageId}}&t=w);" />
+      </div>
+    </li>
+  {{/each}}
+  </ol>
+  {{#each emptyPages}}
+    <div class="page">
+      <!-- Empty page - 5x8 and 6x9 books should have page counts divisible by 6 -->
+    </div>
+  {{/each}}
+</body>
+</html>
