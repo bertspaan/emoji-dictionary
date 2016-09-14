@@ -19,6 +19,7 @@ emojiData.forEach((emoji) => {
 
 const COVER_DIMENSIONS = [
   '11.222in',
+  // '11.181in',
   '8.25in'
 ]
 

@@ -20,8 +20,6 @@
       height: {{cover.height}};
 
       width: 100%;
-      padding: {{page.margin}};
-      box-sizing: border-box;
 
       display: flex;
       flex-direction: row;
@@ -32,10 +30,13 @@
     }
 
     .front, .back {
+      padding: {{page.margin}};
+      box-sizing: border-box;
       width: 50%;
     }
 
     .gutter {
+      padding: {{page.margin}} 0;
       width: {{cover.gutterWidth}};
       flex-shrink: 0;
     }
@@ -112,6 +113,18 @@
 </head>
 <body>
   <div class="cover-page">
+    <div class="back">
+      <ol class="emojis">
+      {{#each emojis}}
+        <li>
+          <img class="emoji" src="{{png}}" />
+        </li>
+      {{/each}}
+      </ol>
+    </div>
+    <div class="gutter">
+      <h1>NYPL Emoji Dictionary — Volume {{romanVolume}}</h1>
+    </div>
     <div class="front">
       <div class="center">
         <h1>NYPL Emoji Dictionary</h1>
@@ -126,18 +139,6 @@
         <h3 class="from-to">{{from.name}} <img src="{{from.png}}" /> — <img src="{{to.png}}" /> {{to.name}}</h3>
       </div>
       <div>NYPL Labs — 2016</div>
-    </div>
-    <div class="gutter">
-      <h1>NYPL Emoji Dictionary — Volume {{romanVolume}}</h1>
-    </div>
-    <div class="back">
-      <ol class="emojis">
-      {{#each emojis}}
-        <li>
-          <img class="emoji" src="{{png}}" />
-        </li>
-      {{/each}}
-      </ol>
     </div>
 </body>
 </html>
