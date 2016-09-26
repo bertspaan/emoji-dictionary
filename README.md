@@ -8,7 +8,7 @@ NYPL Emoji Bot: https://twitter.com/nyplemoji
 
 ✨Send [@NYPLEmoji](https://twitter.com/nyplemoji) an emoji, receive an image ✉️ from [NYPL Digital Collections](http://digitalcollections.nypl.org/).
 
-![NYPL Emoji Bot](images/emoji-bot.jpg)
+![NYPL Emoji Bot](images/emoji-bot.png)
 
 ## Installations
 
