@@ -3,7 +3,7 @@ const path = require('path')
 const H = require('highland')
 const parse = require('csv-parse')
 const Handlebars = require('handlebars')
-const emojiData = require('./emoji.json')
+const emojiData = require('./data/emoji.json')
 const roman = require('roman-numerals')
 const csvParser = parse({delimiter: ','})
 
@@ -32,11 +32,13 @@ const PAGE_DIMENSIONS = [
 
 PAGE_MARGIN = '.35in'
 BINDING_EDGE_MARGIN = '.7in'
+GUTTER_EDGE_MARGIN = '.6in'
 
 const EMOJIS_PER_VOLUME = 185
 
 const EMOJI_PNG_URL = 'https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/'
-var stream = fs.createReadStream('NYPL DEC- Digital Emoji Collections - complete.csv', 'utf8')
+const csvPath = path.join(__dirname, 'data', 'NYPL DEC- Digital Emoji Collections - complete.csv')
+var stream = fs.createReadStream(csvPath, 'utf8')
   .pipe(csvParser)
 
 String.prototype.toCodePoints = function() {
@@ -139,7 +141,8 @@ H(stream)
     cover: {
       width: COVER_DIMENSIONS[0],
       height: COVER_DIMENSIONS[1],
-      gutterWidth: GUTTER_WIDTH
+      gutterWidth: GUTTER_WIDTH,
+      gutterEdgeMargin: GUTTER_EDGE_MARGIN
     }
   }))
   .map(createVolume)

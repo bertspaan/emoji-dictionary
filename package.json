@@ -1,13 +1,10 @@
 {
   "name": "emoji-dictionary",
   "version": "1.0.0",
-  "description": "",
+  "description": "Create Emoji Dictionary PDF from NYPL Emoji Bot data - https://twitter.com/nyplemoji",
   "main": "create.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+  "author": "Bert Spaan",
+  "license": "MIT",
   "dependencies": {
     "csv-parse": "^1.1.7",
     "emoji-data": "^0.2.0",

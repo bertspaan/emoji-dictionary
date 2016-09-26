@@ -35,6 +35,14 @@
       width: 50%;
     }
 
+    .left {
+      padding-right: .6in;
+    }
+
+    .right {
+      padding-left: .6in;
+    }
+
     .gutter {
       padding: .35in 0;
       width: .972in;
@@ -102,18 +110,21 @@
       justify-content: center;
       margin: 0;
       padding: 0;
+      padding-bottom: 1.2in;
+      height: 100%;
+      box-sizing: border-box;
     }
 
     .emoji {
-      width: 28px;
-      padding: 5px;
+      width: 26px;
+      padding: 3px;
     }
 
   </style>
 </head>
 <body>
   <div class="cover-page">
-    <div class="back">
+    <div class="back left">
       <ol class="emojis">
         <li>
           <img class="emoji" src="https://raw.githubusercontent.com/iamcal/emoji-data/master/img-apple-160/1f331.png" />
@@ -645,7 +656,7 @@
     <div class="gutter">
       <h1>NYPL Emoji Dictionary — Volume IV</h1>
     </div>
-    <div class="front">
+    <div class="front right">
       <div class="center">
         <h1>NYPL Emoji Dictionary</h1>
         <div class="nypl-labs">
